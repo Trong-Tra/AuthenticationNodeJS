@@ -48,3 +48,11 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
+
+app.use((_, res) => {
+  res.status(404).json({ message: "Not Found" });
+});
+
+app.listen(3000, () => {
+  console.log("Server started on port 3000");
+});
