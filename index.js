@@ -32,7 +32,7 @@ app.get("/protected", verifiedToken, (_, res) => {
   res.json({ message: "Protected resource accessed" });
 });
 
-function authenticateToken(req, res, next) {
+function verifiedToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = req.query.token || (authHeader && authHeader.split(" ")[1]);
   if (token == null) {
