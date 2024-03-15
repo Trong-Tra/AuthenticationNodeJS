@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const key = process.env.PRIVATE_KEY;
 const name = process.env.USER_NAME;
 const pass = process.env.USER_PASSWORD;
