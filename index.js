@@ -1,11 +1,10 @@
 require("dotenv").config();
+const express = require("express");
+const jwt = require("jsonwebtoken");
 
 const key = process.env.PRIVATE_KEY;
 const name = process.env.USER_NAME;
 const pass = process.env.USER_PASSWORD;
-
-const express = require("express");
-const jwt = require("jsonwebtoken");
 
 const app = express();
 app.use(express.json());
