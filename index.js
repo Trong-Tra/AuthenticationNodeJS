@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 const users = [{ id: 1, username: name, password: pass }];
 
 app.post("/login", (req, res) => {
+  console.log("Received request body:", req.body);
   const { username, password } = req.body;
   const user = users.find(
     (u) => u.username === username && u.password === password
@@ -21,15 +22,18 @@ app.post("/login", (req, res) => {
   if (user) {
     const token = jwt.sign({ id: user.id, username: user.username }, key);
 
-    res.set(`Authorization`, `Holder ${token}`);
-    res.redirect(`/IsTokenProtected=${encodeURIComponent(token)}`);
+    res.header(`Authorization`, `Holder ${token}`);
+    res.redirect(`/IsTokenProtected?token=${encodeURIComponent(token)}`);
   } else {
     res.status(401).json({ alert: "User not found" });
   }
 });
 
 app.get("/IsTokenProtected", verifiedToken, (_, res) => {
-  res.json({ message: "Protected resource accessed" });
+  console.log("User detected!");
+  res.json({
+    message: "Protected resource accessed",
+  });
 });
 
 function verifiedToken(req, res, next) {
@@ -39,7 +43,7 @@ function verifiedToken(req, res, next) {
     return res.sendStatus(401);
   }
 
-  jwt.verify(token, secretKey, (err, user) => {
+  jwt.verify(token, key, (err, user) => {
     if (err) {
       return res.sendStatus(403);
     }
@@ -52,6 +56,7 @@ app.use((_, res) => {
   res.status(404).json({ message: "Not Found" });
 });
 
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
