@@ -25,12 +25,15 @@ app.post("/login", (req, res) => {
     res.header(`Authorization`, `Holder ${token}`);
     res.redirect(`/IsTokenProtected?token=${encodeURIComponent(token)}`);
   } else {
-    res.status(401).json({ alert: "User not found" });
+    const isUserExist = users.find((u) => u.username === username);
+    res
+      .status(401)
+      .json({ alert: isUserExist ? "Wrong password" : "User not found" });
   }
 });
 
 app.get("/IsTokenProtected", verifiedToken, (_, res) => {
-  console.log("User detected!");
+  console.log("User Authorized");
   res.json({
     message: "Protected resource accessed",
   });
