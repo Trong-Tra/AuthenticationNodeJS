@@ -55,7 +55,10 @@ function verifiedToken(req, res, next) {
   });
 }
 
-app.use((_, res) => {
+app.use((err, _, res) => {
+  if (err) {
+    res.status(500).json({ alert: "Internal server error" });
+  }
   res.status(404).json({ message: "Not Found" });
 });
 
