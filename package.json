@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@cosmjs/proto-signing": "^0.32.3",
     "bcrypt": "^5.1.1",
     "bip39": "^3.1.0",
     "body-parser": "^1.20.2",
