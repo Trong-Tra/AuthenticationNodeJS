@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { KeyGen, MnemonicGen } = require("./KeyGenerate.js");
+const { MnemonicGen } = require("./keyGenerate.js");
 
 async function encryptData() {
   try {
