@@ -1,10 +1,10 @@
 const crypto = require("crypto");
-const { generateMnemonicAndKey } = require("./KeyGenerate.js");
+const { KeyGen, MnemonicGen } = require("./KeyGenerate.js");
 
 async function encryptData() {
   try {
-    const { pubkey, address } = await generateMnemonicAndKey();
-    console.log("Public key received:", pubkey.toString());
+    const mnemonic = await MnemonicGen();
+    console.log("Mnemonic received:", mnemonic.mnemonic);
     const key = crypto.randomBytes(32); // 256-bit key
     const iv = crypto.randomBytes(16); // 128-bit IV
 
@@ -12,16 +12,16 @@ async function encryptData() {
     const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv); // decipher object
 
     // Encrypt
-    let encryptedPubkey = cipher.update(pubkey.toString(), "utf-8", "hex");
-    encryptedPubkey += cipher.final("hex");
+    let encryptedMnemonic = cipher.update(mnemonic.mnemonic, "utf-8", "hex");
+    encryptedMnemonic += cipher.final("hex");
 
-    console.log("Encrypted:", encryptedPubkey);
+    console.log("Encrypted:", encryptedMnemonic);
 
     // Decrypt
-    let decryptedPubkey = decipher.update(encryptedPubkey, "hex", "utf-8");
-    decryptedPubkey += decipher.final("utf-8");
+    let decryptedMnemonic = decipher.update(encryptedMnemonic, "hex", "utf-8");
+    decryptedMnemonic += decipher.final("utf-8");
 
-    console.log("Decrypted:", decryptedPubkey);
+    console.log("Decrypted:", decryptedMnemonic);
   } catch (error) {
     console.error("Error encrypting data:", error);
   }

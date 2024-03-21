@@ -15,8 +15,7 @@ async function KeyGen(Generate_mnemonic) {
     );
 
     const [{ pubkey, address }] = await wallet.getAccounts();
-    // console.log("Public key:", pubkey.toString());
-    // console.log("Address:", address);
+
     return { pubkey, address };
   } catch (error) {
     console.error("Error generating key:", error);
@@ -25,12 +24,18 @@ async function KeyGen(Generate_mnemonic) {
 }
 
 // Generate a random mnemonic (12 words by default)
-async function generateMnemonicAndKey() {
+async function MnemonicGen() {
   const mnemonic = await bip39.generateMnemonic();
-  // console.log("Generated mnemonic:", mnemonic);
 
-  const { pubkey, address } = await KeyGen(mnemonic);
-  return { pubkey, address };
+  return { mnemonic };
 }
 
-module.exports = { generateMnemonicAndKey, KeyGen };
+// Test
+
+// const userMnemonic = MnemonicGen();
+// console.log("Generated mnemonic:", userMnemonic);
+// const { pubkey, address } = KeyGen(userMnemonic);
+// console.log("Public key:", pubkey.toString());
+// console.log("Address:", address);
+
+module.exports = { KeyGen, MnemonicGen };
